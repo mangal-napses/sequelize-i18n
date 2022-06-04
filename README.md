@@ -4,7 +4,7 @@
 
 Supports :
 - Node.js >= 10.13.0
-- Seuqelize >= 6.17.0
+- Sequelize >= 6.17.0
 
 ## Usage
 
