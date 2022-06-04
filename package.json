@@ -12,34 +12,25 @@
     "type": "git",
     "url": "https://github.com/MatthieuLepers/sequelize-i18n.git"
   },
-  "main": "./build/index.js",
+  "main": "./src/index.js",
   "engines": {
     "node": ">=10.13.0"
   },
   "scripts": {
-    "build": "babel src --out-dir build",
     "eslint": "eslint --ext .js",
     "eslint:fix": "eslint --ext .js --fix",
     "test:unit": "jest",
-    "test:unit:coverage": "npm run test:unit --coverage",
-    "prebuild": "rimraf build"
+    "test:unit:coverage": "npm run test:unit --coverage"
   },
   "dependencies": {
-    "core-js": "3",
     "sequelize": "6.17.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "7.18.2",
-    "@babel/eslint-parser": "7.18.2",
-    "@babel/preset-env": "7.18.2",
-    "babel-jest": "28.1.0",
     "eslint": "8.10.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-babel": "5.3.0",
     "eslint-plugin-import": "2.25.4",
     "jest": "28.1.0",
-    "rimraf": "3.0.2",
     "sqlite3": "5.0.8"
   }
 }

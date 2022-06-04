@@ -1,6 +1,5 @@
 module.exports = {
   root: true,
-  parser: '@babel/eslint-parser',
   env: {
     commonjs: true,
     node: true,
@@ -10,7 +9,7 @@ module.exports = {
   extends: [
     'airbnb-base',
   ],
-  plugins: ['babel', 'import'],
+  plugins: ['import'],
   settings: {
     'import/extensions': ['error', 'always', {
       js: 'never',
@@ -24,13 +23,7 @@ module.exports = {
         ],
       },
     },
-    'no-param-reassign': ['error', {
-      props: true,
-      ignorePropertyModificationsFor: [
-        'state', // for vuex state
-        'acc', // for reduce accumulators
-      ],
-    }],
+    'no-param-reassign': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'linebreak-style': ['error', 'unix'],
@@ -41,5 +34,6 @@ module.exports = {
       ignoreTrailingComments: true,
       ignoreRegExpLiterals: true,
     }],
+    'semi-style': 'off',
   },
 };

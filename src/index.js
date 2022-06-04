@@ -115,10 +115,10 @@ function $beforeFind(options) {
  * @return {Function}
  */
 function $createI18nOptions(i18nModel, instance) {
-  return (acc, value) => i18nModel.model[value]
+  return (acc, value) => (i18nModel.model[value]
     ? { ...acc, [value]: instance.dataValues[value] }
     : acc
-  ;
+  );
 }
 
 /**
@@ -217,7 +217,7 @@ function $addI18n(newValues, languageId) {
   const model = this.sequelize.models[this.constructor.name];
   const baseOptions = this.sequelize.options.i18n || {};
 
-  if (!newValues || ! model.i18nModel || !languageId || !baseOptions.languages.includes(languageId)) {
+  if (!newValues || !model.i18nModel || !languageId || !baseOptions.languages.includes(languageId)) {
     return null;
   }
 
@@ -251,7 +251,7 @@ function $addI18n(newValues, languageId) {
  * @return {Function}
  */
 function $deleteI18n(i18nModel) {
-  return function(languageId) {
+  return function deleteI18n(languageId) {
     if (!languageId) return null;
 
     return this.sequelize.models[i18nModel.name]
@@ -305,7 +305,7 @@ function $setDefaultScope(defaultScope, name) {
 
   defaultScope.include = [
     ...(defaultScope.include || []),
-    $getFormattedInclude.call(this, name)
+    $getFormattedInclude.call(this, name),
   ];
 }
 
@@ -329,7 +329,7 @@ function $injectI18nScope(scopes, name) {
 function $addI18nScope(scopes, name) {
   const include = $getFormattedInclude.call(this, name);
 
-  scopes.i18n = (languageId) => languageId
+  scopes.i18n = (languageId) => (languageId
     ? {
       include,
       where: {
@@ -339,7 +339,7 @@ function $addI18nScope(scopes, name) {
     : {
       include,
     }
-  ;
+  );
 }
 
 class SequelizeI18N {
@@ -349,7 +349,7 @@ class SequelizeI18N {
    * @param {Object} options
    */
   constructor(sequelize, options = {}) {
-    this.options = Object.assign({}, DEFAULT_OPTIONS, options);
+    this.options = { ...DEFAULT_OPTIONS, ...options };
 
     const { languages, defaultLanguage } = this.options;
     if (!(languages && Array.isArray(languages) && languages.length && defaultLanguage)) {
@@ -390,7 +390,7 @@ class SequelizeI18N {
           },
           parent_id: {
             type: modelPk.type,
-            unique: 'i18n_unicity_constraint',  
+            unique: 'i18n_unicity_constraint',
           },
         };
         const { deletedAt } = options;
@@ -437,7 +437,7 @@ class SequelizeI18N {
             options.scopes = options.scopes || {};
             $addI18nScope(options.scopes, i18nName);
           }
-  
+
           if (this.options.injectI18NScope) {
             options.scopes = options.scopes || {};
             $injectI18nScope(options.scopes, i18nName);

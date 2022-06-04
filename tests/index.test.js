@@ -14,54 +14,48 @@ let instance = null;
 let table1 = null;
 let table2 = null;
 
-const tb1 = (sequelizeClient, DataTypes) =>
-  sequelizeClient.define('table1', {
-    id: {
-      type: DataTypes.BIGINT,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    label: {
-      type: DataTypes.STRING,
-      i18n: true,
-    },
-    description: {
-      type: DataTypes.STRING,
-      i18n: true,
-    },
-    reference: {
-      type: DataTypes.STRING,
-    },
-  }, { freezeTableName: true })
-;
+const tb1 = (sequelizeClient) => sequelizeClient.define('table1', {
+  id: {
+    type: DataTypes.BIGINT,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  label: {
+    type: DataTypes.STRING,
+    i18n: true,
+  },
+  description: {
+    type: DataTypes.STRING,
+    i18n: true,
+  },
+  reference: {
+    type: DataTypes.STRING,
+  },
+}, { freezeTableName: true });
 
-const tb2 = (sequelizeClient, DataTypes) =>
-  sequelizeClient.define('table2', {
-    id: {
-      type: DataTypes.BIGINT,
-      primaryKey: true,
-      autoIncrement: true,
-    },
-    label: {
-      type: DataTypes.STRING,
-    },
-    reference: {
-      type: DataTypes.STRING,
-    },
-  }, {
-    freezeTableName: true,
-    i18n: {
-      underscored: false,
-    },
-  })
-;
+const tb2 = (sequelizeClient) => sequelizeClient.define('table2', {
+  id: {
+    type: DataTypes.BIGINT,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  label: {
+    type: DataTypes.STRING,
+  },
+  reference: {
+    type: DataTypes.STRING,
+  },
+}, {
+  freezeTableName: true,
+  i18n: {
+    underscored: false,
+  },
+});
 
-const Models = (sequelizeClient) => {
-  return {
-    table1: tb1(sequelizeClient, DataTypes),
-    table2: tb2(sequelizeClient, DataTypes),
-  };
-};
+const Models = (sequelizeClient) => ({
+  table1: tb1(sequelizeClient, DataTypes),
+  table2: tb2(sequelizeClient, DataTypes),
+});
 
 describe('SequelizeI18N', () => {
   beforeEach(async () => {
@@ -135,17 +129,11 @@ describe('SequelizeI18N', () => {
         expect(result).not.toBeNull();
         expect(result.length).toEqual(3);
         expect(result).toBeInstanceOf(Array);
-        expect(result).toEqual(
-          expect.arrayContaining([expect.objectContaining({ name: 'table1' })])
-        );
-        expect(result).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({ name: 'table1_i18n' }),
-          ])
-        );
-        expect(result).toEqual(
-          expect.arrayContaining([expect.objectContaining({ name: 'table2' })])
-        );
+        expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ name: 'table1' })]));
+        expect(result).toEqual(expect.arrayContaining([
+          expect.objectContaining({ name: 'table1_i18n' }),
+        ]));
+        expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ name: 'table2' })]));
         done();
       })
       .catch((error) => done(error));
@@ -158,22 +146,18 @@ describe('SequelizeI18N', () => {
         expect(result).toHaveProperty('table1_i18n');
         expect(result.table1_i18n.length).toEqual(2);
         expect(result.table1_i18n).toBeInstanceOf(Array);
-        expect(result.table1_i18n).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              label: 'test',
-              description: 'c\'est un test',
-            }),
-          ])
-        );
-        expect(result.table1_i18n).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              label: 'test EN',
-              description: 'This is a test',
-            }),
-          ])
-        );
+        expect(result.table1_i18n).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            label: 'test',
+            description: 'c\'est un test',
+          }),
+        ]));
+        expect(result.table1_i18n).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            label: 'test EN',
+            description: 'This is a test',
+          }),
+        ]));
         done();
       })
       .catch((error) => done(error));
@@ -228,9 +212,7 @@ describe('SequelizeI18N', () => {
   test('should return updated English i18n values', (done) => {
     table1
       .findByPk(1)
-      .then((result) =>
-        result.update({ label: 'Test EN renamed' }, { language_id: 'EN' })
-      )
+      .then((result) => result.update({ label: 'Test EN renamed' }, { language_id: 'EN' }))
       .then((upd) => {
         const i18nUpdate = upd.getI18n('EN');
 
@@ -292,16 +274,13 @@ describe('SequelizeI18N with a different suffix', () => {
 
     await sequelize.sync({ force: true });
 
-    instance = await table1
-      .create({
-        id: 1,
-        label: 'test',
-        description: 'c\'est un test',
-        reference: 'xxx',
-      })
-      .then((inst) =>
-        inst.addI18n({ label: 'test EN', description: 'This is a test' }, 'EN')
-      );
+    instance = await table1.create({
+      id: 1,
+      label: 'test',
+      description: 'c\'est un test',
+      reference: 'xxx',
+    });
+    await instance.addI18n({ label: 'test EN', description: 'This is a test' }, 'EN');
   });
 
   test('should have created the international table1 table', () => {
@@ -315,14 +294,10 @@ describe('SequelizeI18N with a different suffix', () => {
         expect(result).not.toBeNull();
         expect(result.length).toEqual(3);
         expect(result).toBeInstanceOf(Array);
-        expect(result).toEqual(
-          expect.arrayContaining([expect.objectContaining({ name: 'table1' })])
-        );
-        expect(result).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({ name: 'table1-international' }),
-          ])
-        );
+        expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ name: 'table1' })]));
+        expect(result).toEqual(expect.arrayContaining([
+          expect.objectContaining({ name: 'table1-international' }),
+        ]));
         done();
       })
       .catch((error) => done(error));
@@ -335,22 +310,18 @@ describe('SequelizeI18N with a different suffix', () => {
         expect(result).toHaveProperty('table1-international');
         expect(result['table1-international'].length).toEqual(2);
         expect(result['table1-international']).toBeInstanceOf(Array);
-        expect(result['table1-international']).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              label: 'test',
-              description: 'c\'est un test',
-            }),
-          ])
-        );
-        expect(result['table1-international']).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              label: 'test EN',
-              description: 'This is a test',
-            }),
-          ])
-        );
+        expect(result['table1-international']).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            label: 'test',
+            description: 'c\'est un test',
+          }),
+        ]));
+        expect(result['table1-international']).toEqual(expect.arrayContaining([
+          expect.objectContaining({
+            label: 'test EN',
+            description: 'This is a test',
+          }),
+        ]));
         done();
       })
       .catch((error) => done(error));
