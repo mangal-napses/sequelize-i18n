@@ -42,9 +42,7 @@ const product = (sequelize, DataTypes) =>
   }, {})
 ;
 
-const productModel = (sequelize) => sequelize.import('product', product);
-
-export default productModel;
+export default product;
 ```
 
 ### Initialization
@@ -63,9 +61,7 @@ const i18n = new SequelizeI18N(sequelize, {
 
 i18n.init();
 
-// ...
-
-const productModel = sequelize.import('product', product);
+// Models definition
 ```
 
 ### Options
