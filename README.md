@@ -2,22 +2,22 @@
 
 > 🌎 Straightforward internalization using Sequelize
 
-> ❌ Sorry, but this library is no longer maintained. Please find an alternative that would be up to date with the latest developments of Sequelize.
-
-Supports Node.js >= 10.13.0.
+Supports :
+- Node.js >= 10.13.0
+- Seuqelize >= 6.17.0
 
 ## Usage
 
 ### Install
 
 ```bash
-yarn add @nicolascava/sequelize-i18n
+yarn add @matthieulepers/sequelize-i18n
 ```
 
 Or:
 
 ```bash
-npm install @nicolascava/sequelize-i18n
+npm install @matthieulepers/sequelize-i18n
 ```
 
 ### Model definition

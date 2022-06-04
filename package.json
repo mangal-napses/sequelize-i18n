@@ -1,9 +1,17 @@
 {
-  "name": "sequelize-i18n",
+  "name": "@matthieulepers/sequelize-i18n",
   "version": "3.0.0",
   "description": "🌎 Straightforward internalization using Sequelize",
   "author": "Nicolas Cava <me@nicolascava.com>",
+  "contributors": [
+    "Matthieu Lepers"
+  ],
   "license": "MIT",
+  "homepage": "https://github.com/MatthieuLepers/sequelize-i18n#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MatthieuLepers/sequelize-i18n.git"
+  },
   "main": "./build/index.js",
   "engines": {
     "node": ">=10.13.0"
