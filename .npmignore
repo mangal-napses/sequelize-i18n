@@ -10,6 +10,6 @@ src
 .babelrc.js
 .eslintignore
 .eslintrc.js
-.prettierignore
 jest.config.js
 yarn.lock
+package-lock.json

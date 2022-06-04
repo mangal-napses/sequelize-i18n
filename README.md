@@ -26,26 +26,23 @@ As usual, define your models using [Sequelize](http://docs.sequelizejs.com). Sim
 
 ```javascript
 const product = (sequelize, DataTypes) =>
-  sequelize.define(
-    "product",
-    {
-      id: {
-        type: DataTypes.BIGINT,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      name: {
-        type: DataTypes.STRING,
-        i18n: true,
-      },
-      reference: {
-        type: DataTypes.STRING,
-      },
+  sequelize.define('product', {
+    id: {
+      type: DataTypes.BIGINT,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    {}
-  );
+    name: {
+      type: DataTypes.STRING,
+      i18n: true,
+    },
+    reference: {
+      type: DataTypes.STRING,
+    },
+  }, {})
+;
 
-const productModel = (sequelize) => sequelize.import("product", product);
+const productModel = (sequelize) => sequelize.import('product', product);
 
 export default productModel;
 ```
@@ -55,24 +52,20 @@ export default productModel;
 Just set the Sequelize i18n module before importing models:
 
 ```javascript
-import Sequelize from "sequelize";
-import SequelizeI18N from "sequelize-i18n";
+import Sequelize from 'sequelize';
+import SequelizeI18N from 'sequelize-i18n"';
 
-const languages = {
-  list: ["EN", "FR", "ES"],
-  default: "FR",
-};
-const sequelize = new Sequelize("db_name", "user", "password");
+const sequelize = new Sequelize('db_name', 'user', 'password');
 const i18n = new SequelizeI18N(sequelize, {
-  languages: languages.list,
-  defaultLanguage: languages.default,
+  list: ['EN', 'FR', 'ES'],
+  default: 'FR',
 });
 
 i18n.init();
 
 // ...
 
-const productModel = sequelize.import("product", product);
+const productModel = sequelize.import('product', product);
 ```
 
 ### Options
@@ -80,8 +73,8 @@ const productModel = sequelize.import("product", product);
 - `languages`: list of allowed languages IDs.
 - `defaultLanguage`: default language ID.
 - `i18nDefaultScope`: add i18n to the default model scope.
-- `addI18NScope`: add i18n scope to model.
-- `injectI18NScope`: inject i18n to model scopes.
+- `addI18nScope`: add i18n scope to model.
+- `injectI18nScope`: inject i18n to model scopes.
 
 ### Model options
 
@@ -91,7 +84,7 @@ Those are used in the `i18n` parameter.
 Example:
 
 ```javascript
-sequelize.define("product", {
+sequelize.define('product', {
   ...rest,
   i18n: {
     underscored: false,
@@ -109,7 +102,7 @@ If we enable i18n, it will create a new table where to store property's internat
 Starting from the above example `Product`.
 
 ```javascript
-sequelize.define("product", {
+sequelize.define('product', {
   ...rest,
   name: {
     type: DataTypes.STRING,
@@ -136,9 +129,9 @@ If the where clause includes `language_id`, the same behavior will happen and so
 
 Sequelize i18n will add the functions below to the model:
 
-- `getI18N(language)`: get the translation row for a given language.
-- `addI18N(values, language)`: add a new translation using a different language ID. Values represent the fields to add in the form of `{field: value, field2: value}`.
-- `deleteI18N(language)`: remove the translation row for a given language.
+- `getI18n(language)`: get the translation row for a given language.
+- `addI18n(values, language)`: add a new translation using a different language ID. Values represent the fields to add in the form of `{ field: value, field2: value }`.
+- `deleteI18n(language)`: remove the translation row for a given language.
 
 ### Creation
 
@@ -146,13 +139,13 @@ Sequelize i18n will add the functions below to the model:
 productModel
   .create({
     id: 1,
-    name: "test",
-    reference: "xxx",
-  })
-  .then((result) => {
+    name: 'test',
+    reference: 'xxx',
+  }).then((result) => {
     // [{ name: 'test', lang: 'FR' }]
-    const data = result.product_i18n;
-  });
+    const productI18n = result.product_i18n;
+  })
+;
 ```
 
 Or:
@@ -161,35 +154,45 @@ Or:
 productModel
   .create({
     id: 1,
-    name: "test",
-    reference: "xxx",
+    name: 'test',
+    reference: 'xxx',
   })
   .then((result) => {
     // [{ name: 'test', lang: 'FR' }]
-    const data = result.getI18N("FR");
+    const productI18n = result.getI18n('FR');
   });
 ```
 
 ### Add new translation
 
 ```javascript
-productModel.addI18N({ name: "test EN" }, "EN").then((result) => {});
+productModel
+  .addI18N({ name: 'test EN' }, "EN")
+  .then((result) => {})
+;
 ```
 
 ### Update
 
 ```javascript
-productModel.update({ name: "New name" }).then((result) => {});
+productModel
+  .update({ name: 'New name' })
+  .then((result) => {})
+;
 
 productModel
-  .update({ name: "New name" }, { language_id: "EN" })
-  .then((result) => {});
+  .update({ name: 'New name' }, { language_id: 'EN' })
+  .then((result) => {})
+;
 ```
 
 ### Delete
 
 ```javascript
-productModel.deleteI18N("EN").then((result) => {});
+productModel
+  .deleteI18n('EN')
+  .then((result) => {})
+;
 ```
 
 ### Find requests
@@ -198,12 +201,13 @@ productModel.deleteI18N("EN").then((result) => {});
 productModel
   .findAll({
     where: whereClauseObject,
-    language_id: "EN",
+    language_id: 'EN',
   })
   .then((result) => {
     // 'EN'
-    const data = result.language_id;
-  });
+    const locale = result.language_id;
+  })
+;
 ```
 
 Or:
@@ -212,13 +216,13 @@ Or:
 productModel
   .findAll({
     where: {
-      id: "XXXX",
-      language_id: "EN",
+      id: 'XXXX',
+      language_id: 'EN',
     },
   })
   .then((result) => {
     // 'EN'
-    const data = result.language_id;
+    const locale = result.language_id;
   });
 ```
 
