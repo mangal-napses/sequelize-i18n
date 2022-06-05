@@ -6,6 +6,14 @@ Supports :
 - Node.js >= 10.13.0
 - Sequelize >= 6.17.0
 
+## Notes
+
+- Forked from [nicolascava/sequelize-i18n](https://github.com/nicolascava/sequelize-i18n)
+- No more vunerabilities
+- No more lodash dependency uses
+- Update to sequelize 6.17.0
+- Improve code security
+
 ## Usage
 
 ### Install
