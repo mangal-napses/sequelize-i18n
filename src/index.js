@@ -147,7 +147,9 @@ function $afterCreate(instance, options) {
         },
         defaults: i18nOptions,
       })
-      .then(() => instance.reload())
+      .then(() => {
+        instance.reload();
+      })
       .catch((error) => {
         instance.destroy({ force: true }).then(() => {
           throw error;
